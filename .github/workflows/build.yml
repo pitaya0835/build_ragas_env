@@ -1,0 +1,27 @@
+name: Build and Export Ragas Image
+
+# 手動で実行できるようにする設定
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. リポジトリのファイルを読み込む
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Dockerイメージをビルドして、tarファイルとして保存する
+      - name: Build and Save Docker image
+        run: |
+          docker build -t ragas-env:latest .
+          docker save -o ragas-env.tar ragas-env:latest
+
+      # 3. 出来上がったtarファイルをダウンロードできるようにする
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ragas-docker-image
+          path: ragas-env.tar
+          retention-days: 1 # ダウンロードできれば良いので保存期間は短く設定
