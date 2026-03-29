@@ -1,0 +1,5 @@
+ragas
+langchain
+# オフラインでローカルLLMを使う場合は以下も必要になることが多いです
+sentence-transformers
+# その他必要なライブラリ
